@@ -1,0 +1,38 @@
+{
+    "account": {
+        "admin": {
+            "has_ec2_access": 0,
+            "encrypted_aws_secret": null,
+            "id": 1000,
+            "encrypted_aws_key": null,
+            "aws_id": null,
+            "first_name": "Mario",
+            "last_name": "Olive",
+            "has_cloudgear_subscription": false,
+            "email": "mario13002@yahoo.com"
+        },
+        "subscription": {
+            "updated_at": "2009-05-21T23:47:05Z",
+            "production_instance_limit": 0,
+            "freshbooks_id": null,
+            "expiration_date": null,
+            "development_instance_limit": 0,
+            "billing_subscription_id": null,
+            "admin_account_limit": 1,
+            "billing_status": null,
+            "id": 1000,
+            "freshbooks_url": null,
+            "supported_instances": 0,
+            "billing_customer_id": null,
+            "subscription_key": "",
+            "aws_id": null,
+            "owner": "Mario Olive",
+            "ovf_access": false,
+            "key_owner": null,
+            "ec2_access": 0,
+            "type_name": "Free",
+            "hosted_access": false,
+            "created_at": "2009-05-21T23:47:05Z"
+        }
+    }
+}
