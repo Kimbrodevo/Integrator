@@ -1,6 +1,5 @@
+# Defines the interface for service Processors
 class Processor
-  
   def process(json)
-    p "process"
   end
 end
