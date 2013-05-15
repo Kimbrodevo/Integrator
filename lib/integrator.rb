@@ -5,8 +5,9 @@ require 'integrator/processor'
 
 class Integrator
 
-  def initialize(directory)
+  def initialize(directory, processors)
     @path = directory
+    @processors = processors
     @inbox = File.join(directory, "inbox")
   end
   
@@ -25,7 +26,9 @@ class Integrator
       Dir.foreach(@inbox) do |item|
         next if item == '.' or item == '..'
         json = load_file(item)
-        Processor.new(json).process
+        @processors.each { |processor|
+          processor.process(json)
+        }
         processed << item
       end
     end

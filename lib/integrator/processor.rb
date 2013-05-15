@@ -1,9 +1,6 @@
 class Processor
   
-  def initialize(json)
-    @json = json
-  end
-  
-  def process
+  def process(json)
+    p "process"
   end
 end
