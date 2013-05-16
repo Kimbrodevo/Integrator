@@ -17,7 +17,7 @@ class Integrator
   end
   
   def queued
-    Dir.glob(File.join(@inbox, '**', '*')).select { |file| File.file?(file) }.count
+    Dir.glob(File.join(@inbox, '**', '*')).select { |file| File.file?(file) }.length
   end
   
   def poll(pause = 0)
