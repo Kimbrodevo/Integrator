@@ -20,7 +20,7 @@ class Integrator
     Dir.glob(File.join(@inbox, '**', '*')).select { |file| File.file?(file) }.count
   end
   
-  def poll
+  def poll(pause = 0)
     processed = []
     self.lock
     if (self.queued > 0)      
@@ -33,6 +33,7 @@ class Integrator
         processed << item
         
         FileUtils.rm(File.join(@inbox, item))
+        sleep pause
       end
     end
     self.unlock

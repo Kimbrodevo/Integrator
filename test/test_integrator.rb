@@ -25,4 +25,8 @@ class IntegratorTest < Test::Unit::TestCase
   def test_poll
     assert_equal(1, @integrator.poll.length)
   end
+
+  def test_poll_pause
+    assert_equal(1, @integrator.poll(5).length) 
+  end
 end
