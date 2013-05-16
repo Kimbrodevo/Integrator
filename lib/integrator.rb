@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'json'
+require 'fileutils'
 
 require 'integrator/processor'
 
