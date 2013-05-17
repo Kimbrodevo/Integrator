@@ -2,15 +2,22 @@ require 'test/unit'
 require 'fileutils'
 
 require 'integrator'
+require 'test/failure_processor'
 
 class IntegratorTest < Test::Unit::TestCase
 
   def setup
-    FileUtils.mkdir_p("integration/inbox")
-    FileUtils.cp("test/fixture/1000.json", "integration/inbox")
+    @inbox = "integration/inbox"
+    @archive = "integration/archive"
+    FileUtils.rm_rf(@inbox)
+    FileUtils.rm_rf(@archive) 
+    
+    FileUtils.mkdir_p(@inbox)
+    FileUtils.mkdir_p(@archive) 
+    FileUtils.cp("test/fixture/1000.json", @inbox)
     log = File.open("/dev/null", "w")
     processors = [Processor.new]
-    @integrator = Integrator.new("integration", processors, log)
+    @integrator = Integrator.new("integration", processors, 0, log)
   end
   
   def test_load
@@ -27,6 +34,15 @@ class IntegratorTest < Test::Unit::TestCase
   end
 
   def test_poll_pause
-    #assert_equal(1, @integrator.poll(2).length) 
+    assert_equal(1, @integrator.poll(2).length) 
+  end
+
+  def test_poll_failure
+    processors = [FailureProcessor.new]
+    integrator = Integrator.new("integration", processors, 5)
+    integrator.poll
+
+    assert_equal(false, File.exist?(File.join(@inbox, "1000.json")))
+    assert_equal(true, File.exist?(File.join(@archive, "1000.json")))
   end
 end

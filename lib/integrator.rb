@@ -6,13 +6,15 @@ require 'integrator/processor'
 
 class Integrator
 
-  def initialize(directory, processors, log=$stderr, retry_count=0)
+  def initialize(directory, processors, retry_count=0, log=$stderr)
     @path = directory
     @processors = processors
     @retry_count = retry_count   
     @log = log
 
     @inbox = File.join(directory, "inbox")
+    @archive = File.join(directory, "archive")
+    
   end
   
   def load_file(filename)
@@ -39,7 +41,12 @@ class Integrator
         }
         processed << item
         
-        FileUtils.rm(File.join(@inbox, item))
+        begin
+          FileUtils.rm(File.join(@inbox, item))
+        rescue
+          # File may already have been moved
+        end
+        
         sleep pause
       end
     end
@@ -51,11 +58,15 @@ class Integrator
   def process(processor, json, item, retry_count)
     begin
       processor.process(json)
-    rescue
+    rescue Exception => err
+      self.log err
       self.log "Failure processing #{item}"
       if retry_count < @retry_count
-        self.log "Retrying processing of #{item} will retry #{@retry_count - retry_count} times"
-        process(processor, json, retry_count + 1)
+        self.log "Retrying processing of #{item} will retry #{@retry_count - retry_count} more times"
+        process(processor, json, item, retry_count + 1)
+      else
+        self.log "Unable to process #{item} after #{@retry_count} attempts: archiving for manual examination"
+        FileUtils.mv(File.join(@inbox, item), File.join(@archive, item))     
       end
     end    
   end
